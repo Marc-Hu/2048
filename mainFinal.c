@@ -5,9 +5,6 @@
  * A but pédagogique nous devons réaliser un jeu 2048 en langage C.Nous avons donc procédé à la rédaction
  * d’un Cahier des Charges Fonctionnel (CdCF) qui est un document formulant le
  * besoin, au moyen de fonctions détaillant les services rendus par un produit et
- * les contraintes auxquelles il est soumis.
- * \section Titre2 Histoire du jeu :
- * \section Titre3 Règles du jeu :
  */
 
 /**
@@ -553,9 +550,12 @@ int lanceMenu (menu *p){
 
 int menuD(){
     menu p;
+    int i;
     initialisationMenu(&p, 6);
     affichageMenu(&p);
-    return lanceMenu(&p);
+    i=lanceMenu(&p);
+    libereMemoireMenu(&p);
+    return i;
 }
 
 int jouer (jeu *p){
@@ -575,6 +575,8 @@ int jouer (jeu *p){
     }
     return 0;
 }
+
+// Fonction en cours de développement, ces fonctions doivent créer un tableau des meilleurs scores
 /*
 void initScore(char **tabPseudo, int **tab){
     tabPseudo=malloc(10*sizeof(char *));
@@ -664,6 +666,12 @@ void afficheTableauScore(){
 }
 
 */
+
+/*
+* Fonction sauvegarde qui sauvegarde au maximum 5 parties de 2048
+* On écrase la sauvegarde si celui-ci contient déjà une sauvegarde
+* Il créera au maximum 5 fichiers binaires
+*/
 int sauvegarde (jeu *p) {
     FILE* fichsave;
     int choix=0;
@@ -702,6 +710,12 @@ int sauvegarde (jeu *p) {
     fclose(fichsave);
     return 1;
 } 
+
+/*
+* Fonction qui va charger une partie pré-enregistré.
+* Si la sauvegarde n'existe pas alors l'utilisateur sera redirigé vers le menu principal
+* Si on veut on peut aussi supprimer toutes les sauvegardes 
+*/
 
 int chargement (jeu *p) {
     FILE* fichsave;
@@ -752,6 +766,11 @@ int chargement (jeu *p) {
     return 1;
 } 
 
+/*
+* Cette fonction permet au joueur de saisir la valeur maximale à atteindre pour gagner.
+* Elle permet aussi au joueur de choisir la taille de la grille (min 3 par 3 et max 7 par 7)
+*/
+
 void option (int *nbCases, int *valGagn){
     do {
         printf("Choisissez la valeur maximale : 512   1024   2048   4096  8192\n");
@@ -764,8 +783,7 @@ void option (int *nbCases, int *valGagn){
 }
 
 void libereMemoire(jeu *p) {
-    free((*p).grille);
-    (*p).grille=NULL;
+    free(p->grille);
 }
 
 int main (void) {
@@ -802,46 +820,11 @@ int main (void) {
                 sleep(2);
                 break;
             case 6 :
+                //libereMemoire(&p);
                 return 0;
                 break;
         }
     }
-
-/*
-
-    if (menu==1){
-        initialiseJeu(p,4,2048);
-        jouer(p);
-    }
-    if (menu==2){
-        sauvegarde(p);
-    }
-    if (menu==3){
-        chargement(p);
-    }
-    if (menu==4){
-        do {
-            printf("Choisissez la valeur maximale : 512   1024   2048   4096  8192\n");
-            scanf ("%d",&valGagn);
-        } while (valGagn!=512 && valGagn!=1024 && valGagn!=2048 && valGagn!=4096 && valGagn!=8192);
-        do {
-            printf ("Choisissez le nombre de cases par lignes/colonnes (3-7)\n");
-            scanf ("%d",&nbCases);
-        } while (nbCases<3 || nbCases>7);
-        initialiseJeu(p,nbCases,valGagn);
-        jouer(p);
-        }
-    if (menu==5){
-        afficheTableauScore();
-    }
-    if (menu==6){
-        libereMemoire(p);
-    }
-    clear_terminal();
-    jouer(p);
-    if (jouer(p)==1) 
-        rempliTableauScore(p);
-*/
     return 0;
 }
 
