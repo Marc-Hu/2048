@@ -450,8 +450,7 @@ void initialisationMenu(menu *p, int nb){
     p->choix[1]="Sauvegarder";
     p->choix[2]="Chargement";
     p->choix[3]="Option";
-    p->choix[4]="Scores";
-    p->choix[5]="Quitter";
+    p->choix[4]="Quitter";
 }
 
 //Libère la mémoire alloué pour le menu et la flèche
@@ -551,7 +550,7 @@ int lanceMenu (menu *p){
 int menuD(){
     menu p;
     int i;
-    initialisationMenu(&p, 6);
+    initialisationMenu(&p, 5);
     affichageMenu(&p);
     i=lanceMenu(&p);
     libereMemoireMenu(&p);
@@ -576,96 +575,6 @@ int jouer (jeu *p){
     return 0;
 }
 
-// Fonction en cours de développement, ces fonctions doivent créer un tableau des meilleurs scores
-/*
-void initScore(char **tabPseudo, int **tab){
-    tabPseudo=malloc(10*sizeof(char *));
-    int  i;
-    for (i=0; i<10; i++)
-        tabPseudo[i]=malloc(11*sizeof(char));
-    tab=malloc(10*sizeof(int*));
-    for (i=0; i<10; i++)
-        tab[i]=malloc(3*sizeof(int));
-}
-
-void insertionScore(scoring *tab, jeu p, int i, char *pseudo){
-    int j;
-    for(j=9; j>i; j--){
-        tab->nom[j]=tab->nom[j-1];
-        tab->score[j]=tab->score[j-1];
-        tab->tailleGrille[j]=tab->tailleGrille[j-1];
-        tab->valMax[j]=tab->valMax[j-1];
-        printf("Erreur\n");
-    }
-    tab->nom[i]=pseudo;
-    tab->score[i]=p.score;
-    tab->tailleGrille[i]=p.n;
-    tab->valMax[i]=p.valMax;
-}
-
-void rempliTableauScore (jeu p, char *pseudo){
-    char **tabPseudo;
-    int **tab;
-    FILE *fichier;
-    int i;
-    initScore(tabPseudo, tab);
-    fichier=fopen("tableauDesScores.bin", "r+b");
-    if (fichier==NULL){
-        fichier=fopen("tableauDesScores.bin", "w+b");
-        for (i=0; i<10; i++){
-            tabPseudo[i]="none";
-            tab[i][0]=0;
-            tab[i][1]=0;
-            tab[i][2]=0;
-        }
-        fwrite(tabPseudo, 11*sizeof(char), 10, fichier);
-        fwrite(tab, 3*sizeof(int), 10, fichier);
-    }
-    fread(tabPseudo, 11*sizeof(char), 10, fichier);
-    fread(tab, 3*sizeof(int), 10, fichier);
-    if (tab[9][1]==0 || tab[9][1]<(p.score)){
-        for (i=9; i>0 && tab[i][0]<(p.score); i--)//{
-            if (tab[i][0]>(p.score))
-                //insertionScore(&tab, p, i+1, pseudo);
-        //}
-        fwrite(tabPseudo, 11*sizeof(char), 10, fichier);
-        fwrite(tab, 3*sizeof(int), 10, fichier);
-    }
-    fclose(fichier);
-}
-void afficheTableauScore(){
-    char **tabPseudo;
-    int **tab;
-    FILE *fichier;
-    int i;
-    char quit;
-    fichier=fopen("tableauDesScores.bin", "r+b");
-    if(fichier==NULL){
-        fichier=fopen("tableauDesScores.bin", "w+b");
-        initScore(tabPseudo, tab);
-        for (i=0; i<10; i++){
-            tabPseudo[i]="none";
-            tab[i][0]=0;
-            tab[i][1]=0;
-            tab[i][2]=0;
-        }
-        fwrite(tabPseudo, 11*sizeof(char), 10, fichier);
-        fwrite(tab, 3*sizeof(int), 10, fichier);
-
-    }
-    fread(tabPseudo, 11*sizeof(char), 10, fichier);
-    fread(tab, 3*sizeof(int), 10, fichier);
-    printf("Pseudo\tScore\tTaille\tValeurMax\n");
-    for(i=0; i<10; i++)
-        printf("%s\t%d\t%d\t%d\n", tabPseudo[i], tab[i][0], tab[i][1], tab[i][2]);
-    printf("Quitter?[O/n]\n");
-    do{
-        scanf("%c", &quit);
-    }while (quit!='O' && quit!='n');
-    fclose(fichier);
-}
-
-*/
 
 /*
 * Fonction sauvegarde qui sauvegarde au maximum 5 parties de 2048
@@ -790,7 +699,7 @@ int main (void) {
     jeu p;
     //int nbCases,valGagn;
     int menu=0, nbCases, valGagn;
-    while(menu!=6){
+    while(menu!=5){
         menu=menuD();
         switch (menu){
             case 1 :
@@ -816,10 +725,6 @@ int main (void) {
                 jouer(&p);
                 break;
             case 5 :
-                printf("En cours de maintenance!\n");
-                sleep(2);
-                break;
-            case 6 :
                 //libereMemoire(&p);
                 return 0;
                 break;
