@@ -23,6 +23,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include <unistd.h>
 #include<string.h>
 
 /*
@@ -260,8 +261,11 @@ int perdu(jeu *p){
 // Fonction qui retourne 1 si la partie est terminé et 0 sinon
 
 int finPartie (jeu *p){
-    if (perdu(p) || gagne(p))          // Si c'est perdu ou si c'est gagné alors la partie est fini et on retourne 1
+    if (perdu(p) || gagne(p)){          // Si c'est perdu ou si c'est gagné alors la partie est fini et on retourne 1
         return 1;
+        printf("C'est fini!\nRedirection vers le menu principal en cours ...\n");
+        sleep(2);
+    }
     return 0;                            // Sinon on retourne 0 si aucune condition n'est valide
 }
 
@@ -521,17 +525,17 @@ int lanceMenu (menu *p){
         switch (saisie){
             case 0 : 
                 j=getFleche(p);
-                if (j==(p->nbChoix-1))
-                    j=(p->nbChoix-2);
-                p->fleche[j+1]='>';
-                p->fleche[j]=' ';
+                if (j!=(p->nbChoix-1)){
+                    p->fleche[j+1]='>';
+                    p->fleche[j]=' ';
+                }
                 break;
             case 2 :
                 j=getFleche(p);
-                if (j==0)
-                    j=1;
-                p->fleche[j-1]='>';
-                p->fleche[j]=' ';
+                if (j!=0){
+                    p->fleche[j-1]='>';
+                    p->fleche[j]=' ';
+                }
                 break;
             case 1 :
                 return getFleche(p)+1;
@@ -708,6 +712,8 @@ int main (void) {
                 ajouteValAlea(&p);
                 p.nbCasesLibres-=2;
                 jouer(&p);
+                printf("C'est fini! Redirection vers le menu principal en cours ...\n");
+                sleep(2);
                 break;
             case 2 :
                 sauvegarde(&p);
